@@ -2,6 +2,7 @@ package com.example.instagramclone;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -27,6 +28,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private TextView txtGetData;
     private Button btnGetAllData;
     private String allKickBoxers;
+    private Button btnNextActivity;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,6 +49,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         btnGetAllData = findViewById(R.id.btnGetAllData);
 
+        btnNextActivity = findViewById(R.id.btnNextActivity);
+
         txtGetData.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -56,9 +60,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     public void done(ParseObject object, ParseException e) {
 
                         if (object != null && e == null) {
-
                             txtGetData.setText(object.get("name") + " - " + "Punch power: " + object.get("punchPower") );
-
                         }
 
                     }
@@ -72,6 +74,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
                 allKickBoxers = "";
                 ParseQuery<ParseObject> queryAll = ParseQuery.getQuery("KickBoxer");
+
+                //queryAll.whereGreaterThan("punchPower", 4020);
+                queryAll.whereGreaterThanOrEqualTo("punchPower", 3000);
+
                 queryAll.findInBackground(new FindCallback<ParseObject>() {
                     @Override
                     public void done(List<ParseObject> objects, ParseException e) {
@@ -93,6 +99,19 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
             }
         });
+
+        btnNextActivity.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Intent intent = new Intent(MainActivity.this,
+                        SignUpLoginActivity.class);
+                startActivity(intent);
+
+            }
+        });
+
+
     }
 
 
