@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 
@@ -46,22 +47,32 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
             case R.id.btnLoginActivity:
 
-                ParseUser.logInInBackground(edtLoginEmail.getText().toString(),
-                        edtLoginPassword.getText().toString(),
-                        new LogInCallback() {
-                            @Override
-                            public void done(ParseUser user, ParseException e) {
+                if (edtLoginEmail.getText().toString().equals("") ||
+                        edtLoginPassword.getText().toString().equals("")) {
 
-                                if (user != null && e == null){
-                                    FancyToast.makeText(LoginActivity.this,
-                                            user.getUsername() + " is logged in",
-                                            FancyToast.LENGTH_SHORT, FancyToast.SUCCESS,
-                                            false).show();
-                                }  else {
+                    FancyToast.makeText(LoginActivity.this,
+                            "username and password are required! ",
+                            FancyToast.LENGTH_LONG,
+                            FancyToast.INFO,
+                            false).show();
+                } else {
+                    ParseUser.logInInBackground(edtLoginEmail.getText().toString(),
+                            edtLoginPassword.getText().toString(),
+                            new LogInCallback() {
+                                @Override
+                                public void done(ParseUser user, ParseException e) {
 
+                                    if (user != null && e == null){
+                                        FancyToast.makeText(LoginActivity.this,
+                                                user.getUsername() + " is logged in",
+                                                FancyToast.LENGTH_SHORT, FancyToast.SUCCESS,
+                                                false).show();
+                                    }  else {
+
+                                    }
                                 }
-                            }
-                        });
+                            });
+                }
 
                 break;
 
@@ -70,5 +81,18 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
         }
 
+    }
+
+    public void rootLayoutTapped (View view) {
+        try {
+            InputMethodManager inputMethodManager =
+                    (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
+
+            inputMethodManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
+        } catch (Exception e) {
+
+            e.printStackTrace();
+
+        }
     }
 }
