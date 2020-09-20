@@ -2,6 +2,7 @@ package com.example.instagramclone;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -67,8 +68,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                                                 user.getUsername() + " is logged in",
                                                 FancyToast.LENGTH_SHORT, FancyToast.SUCCESS,
                                                 false).show();
-                                    }  else {
-
+                                        transitionToSocialMedia();
                                     }
                                 }
                             });
@@ -90,9 +90,15 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
             inputMethodManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
         } catch (Exception e) {
-
             e.printStackTrace();
-
         }
     }
+
+    private void transitionToSocialMedia() {
+
+        Intent intent = new Intent (LoginActivity.this, SocialMedia.class);
+        startActivity(intent);
+
+    }
+
 }
